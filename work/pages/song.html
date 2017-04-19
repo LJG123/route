@@ -1,0 +1,30 @@
+<div class="swiper-container">
+    <ul class="swiper-wrapper">
+        <li class="swiper-slide">
+            <div class="img">
+                <img src="images/imgs/banner.jpg">
+            </div>
+        </li>
+        <li class="swiper-slide">
+            <div class="img">
+                <img src="images/imgs/img1.png">
+            </div>
+        </li>
+        <li class="swiper-slide">
+            <div class="img">
+                <img src="images/imgs/img2.png">
+            </div>
+        </li>
+    </ul>
+    <div class="swiper-pagination"></div>
+</div>
+<div class="list" ng-repeat="val in arr">
+    <p><span>{{val.who}}</span> - <span>{{val.name}}</span></p>
+    <i class="fa fa-download" ng-click="dialog()"></i>
+</div>
+<div class="cover" ng-class="{'show':toggle}">
+    <div class="dialog">
+        <h3>{{title}}</h3>
+        <p><span class="cancel" ng-click="no()">{{cancel}}</span><span class="ok" ng-click="yes()">{{ok}}</span></p>
+    </div>
+</div>

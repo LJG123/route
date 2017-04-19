@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link type="text/css" rel="stylesheet" href="css/reset.css">
+    <link type="text/css" rel="stylesheet" href="css/common.css">
+    <link type="text/css" rel="stylesheet" href="css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="css/swiper.css">
+    <link type="text/css" rel="stylesheet" href="css/index.css">
+</head>
+<body ng-app="app">
+    <header class="header">
+        <div class="top">
+            <h2>酷狗音乐</h2>
+            <div><img src="images/photos/icon.png"></div>
+            <p>下载酷狗</p>
+            <i class="fa fa-search"></i>
+        </div>
+        <div class="bottom">
+            <ul>
+                <li ng-class="{'border':number==0}" ng-click="border(0)"><a href="#/new">新歌</a></li>
+                <li ng-class="{'border':number==1}" ng-click="border(1)"><a href="#/order">排行</a></li>
+                <li ng-class="{'border':number==2}" ng-click="border(2)"><a href="#/song">歌单</a></li>
+                <li ng-class="{'border':number==3}" ng-click="border(3)"><a href="#/singer">歌手</a></li>
+            </ul>
+        </div>
+    </header>
+    <section class="main" ng-view></section>
+    <script type="text/javascript" src="js/angular.js"></script>
+    <script type="text/javascript" src="js/angular-route.js"></script>
+    <script type="text/javascript" src="js/swiper.js"></script>
+    <script type="text/javascript">
+        var app=angular.module("app",["ngRoute"]);
+        app.run(function($rootScope){
+            //$rootScope.number=0;
+            $rootScope.border=function(option){
+                $rootScope.number=option;
+            }
+        });
+        app.config(function($routeProvider){
+            $routeProvider
+                    .when("/new",{
+                        templateUrl:"pages/new.html",
+                        controller:function($scope,$http){
+                            $http.get("data/new.json")
+                                    .success(function(data){
+                                        //console.log(data);
+                                        $scope.arr=data;
+                                    });
+                        }
+                    })
+                    .when("/order",{
+                        templateUrl:"pages/order.html",
+                        controller:function($scope,$http){
+                            $http.get("data/order.json")
+                                    .success(function(data){
+                                        //console.log(data);
+                                        $scope.arr=data;
+                                    });
+                        }
+                    })
+                    .when("/song",{
+                        templateUrl:"pages/song.html",
+                        controller:function($scope,$http){
+                            $http.get("data/song.json")
+                                    .success(function(data){
+                                        //console.log(data);
+                                        $scope.arr=data;
+                                    });
+                            //弹出框
+                            $scope.title='下载需要手机酷狗客户端支持';
+                            $scope.cancel="取消";
+                            $scope.ok="在客户端下载";
+                            $scope.dialog=function(){
+                                $scope.toggle=true;
+                            }
+                            $scope.no=function(){
+                                $scope.toggle=false;
+                            }
+                            $scope.yes=function(){
+                                $scope.toggle=false;
+                            }
+                            //banner部分
+                            new Swiper(".swiper-container",{
+                                pagination:".swiper-pagination",
+                                paginationClickable:true,
+                                autoplay:1000
+                            });
+                        }
+                    })
+                    .when("/singer",{
+                        templateUrl:"pages/singer.html",
+                        controller:function($scope,$http){
+                            $http.get("data/singer.json")
+                                    .success(function(data){
+                                        //console.log(data);
+                                        $scope.arr=data;
+                                    });
+                        }
+                    })
+                    .otherwise("/new");
+        });
+    </script>
+</body>
+</html>
